@@ -7,6 +7,7 @@ import Header from "./Header";
 import Companies from "./Companies";
 import LogPage from "./LogPage";
 import AdmPage from "./AdmPage";
+import UserPage from "./UserPage";
 
 function HomePage() {
   const { logAdmin, isAdm } = useContext(UserContext)
@@ -17,14 +18,16 @@ function HomePage() {
       <Container>
 
         {
-          logAdmin === "true" ? (
-            <LogPage />
-          ) : logAdmin === ""  ? (
+          logAdmin === "" ? (
             <Companies />
+          ) : logAdmin === "true" ? (
+            <LogPage />
+          ) : logAdmin === "false" ? (
+            <LogPage />
           ) : isAdm ? (
             <AdmPage />
           ) : (
-            <></>
+            <UserPage />
           )
         }
 

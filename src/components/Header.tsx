@@ -6,7 +6,7 @@ import { Button } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 
 function Header() {
-  const { setLogAdmin, setIsAdm, isAdm } = useContext(UserContext)
+  const { setLogAdmin, setIsAdm, isAdm, logAdmin, setCompanyInfo } = useContext(UserContext)
 
   function logOut() {
     if (window.confirm("Você deseja se deslogar?")) {
@@ -16,8 +16,10 @@ function Header() {
       window.localStorage.removeItem('photo');
       window.localStorage.removeItem('userName');
       window.localStorage.removeItem('professionalDescription');
-      setIsAdm(false)
+      //setIsAdm(false)
       setLogAdmin("")
+      setCompanyInfo(null)
+
     }
   }
 
@@ -25,7 +27,7 @@ function Header() {
     <Box>
 
       {
-        !isAdm ? (
+        logAdmin === "" || logAdmin === "true" ? (
           <>
             <BoxCompany onClick={() => setLogAdmin("")}>
               <H1>TRACTIAN</H1>
@@ -35,7 +37,16 @@ function Header() {
               <Span>Log as Admin</Span>
             </ButtonBox>
           </>
-        ) : (
+        ) : logAdmin === "false" ? (
+          <>
+            <BoxCompany onClick={() => setLogAdmin("")}>
+              <H1>TRACTIAN</H1>
+            </BoxCompany>
+            <ButtonBox onClick={() => setLogAdmin("true")}>
+              <Button disabled={true} type="primary" shape="round" icon={<UserOutlined />} size="large" style={{ backgroundColor: "#0258e8", border: 'none' }} />
+            </ButtonBox>
+          </>
+        ) : isAdm || !isAdm ? (
           <>
             <BoxCompany>
               <H1>TRACTIAN</H1>
@@ -43,6 +54,16 @@ function Header() {
             <ButtonBox onClick={() => logOut()}>
               <Button type="primary" shape="round" icon={<UserOutlined />} size="large" style={{ backgroundColor: "#0258e8", border: 'none' }} />
               <Span>Log of</Span>
+            </ButtonBox>
+          </>
+        ) : (
+          <>
+            <BoxCompany onClick={() => setLogAdmin("")}>
+              <H1>TRACTIAN</H1>
+            </BoxCompany>
+            <ButtonBox onClick={() => setLogAdmin("true")}>
+              <Button type="primary" shape="round" icon={<UserOutlined />} size="large" style={{ backgroundColor: "#0258e8", border: 'none' }} />
+              <Span>Log as Admin</Span>
             </ButtonBox>
           </>
         )
@@ -54,7 +75,7 @@ function Header() {
 const Box = styled.div`
   display: flex;
   align-items: center;
-  background-color: #f3f1f1;
+  background-color: #fdf9f9;
   height: 12vh;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   position: relative;

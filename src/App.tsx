@@ -6,6 +6,7 @@ import GlobalStyle from "./assets/globalStyle";
 import HomePage from "./components/Homepage";
 
 import UserContext from "./contexts/userContext";
+import { CompanyProvider } from "./contexts/CompanyContext"
 
 
 
@@ -18,11 +19,14 @@ function App() {
   const tokenStorage: any = localStorage.getItem('token');
   const token: string = JSON.parse(tokenStorage)
 
+  const name: any = localStorage.getItem('userName')
+  const fullName: string = JSON.parse(name)
+
   const [companies, setCompanies] = useState([])
   const [companyInfo, setCompanyInfo] = useState(null)
   const [newCompany, setNewCompany] = useState("")
 
-  const [userName, setUserName] = useState("")
+  const [userName, setUserName] = useState(fullName)
   const [userToken, setUserToken] = useState(token)
   const [isAdm, setIsAdm] = useState("")
   const [logAdmin, setLogAdmin] = useState("")
@@ -34,9 +38,11 @@ function App() {
       <GlobalStyle />
       <BrowserRouter>
         <UserContext.Provider value={userContextValue}>
-          <Routes>
-            <Route path={"/"} element={<HomePage />} />
-          </Routes>
+          <CompanyProvider>
+            <Routes>
+              <Route path={"/"} element={<HomePage />} />
+            </Routes>
+          </CompanyProvider>
         </UserContext.Provider>
       </BrowserRouter>
     </>

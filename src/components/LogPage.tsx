@@ -9,8 +9,9 @@ import { Button, Checkbox, Form, Input } from 'antd';
 
 function LogPage() {
 
-  const { setUserName, setUserToken, setIsAdm, setLogAdmin, companyId } = useContext(UserContext)
-
+  const { setUserName, setUserToken, setIsAdm, setLogAdmin, logAdmin, companyInfo } = useContext(UserContext)
+  console.log(companyInfo)
+  
   interface userData {
     fullName: String;
     token: String;
@@ -18,22 +19,31 @@ function LogPage() {
     isAdm: Boolean;
   }
 
-  interface admLogin {
+  interface login {
     email: String;
     password: String;
   }
 
   const [admLogin, setAdmLogin] = useState({ email: "", password: "" })
 
-  const objAdmLogin: admLogin = {
+  const objLogin: login = {
     email: admLogin.email,
     password: admLogin.password
   }
 
   function logInAsAdmin() {
-    const URL = "http://localhost:5000/adm/signIn"
 
-    const promise = axios.post(URL, objAdmLogin)
+    let URL = ""
+
+    if (logAdmin === "true") {
+      URL = "http://localhost:5000/adm/signIn"
+    } else if (logAdmin === "false") {
+      URL = `http://localhost:5000/signIn/${companyInfo.id}`
+    }
+
+    console.log("url", URL)
+
+    const promise = axios.post(URL, objLogin)
     promise.then(response => {
       const { data } = response
       console.log(data)
@@ -45,8 +55,13 @@ function LogPage() {
       setUserName(data.fullName)
       setUserToken(data.token)
 
-      setIsAdm(true)
-      setLogAdmin("false")
+      if (logAdmin === "true") {
+        setIsAdm(true)
+        setLogAdmin(null)
+      } else if (logAdmin === "false") {
+        setIsAdm(false)
+        setLogAdmin(null)
+      }
     })
     promise.catch(err => {
       console.log(err)
@@ -56,59 +71,70 @@ function LogPage() {
 
   return (
     <Body>
-          <>
+      <>
+
+        {
+          logAdmin === "true" ? (
             <H1Box>
               <H1>Log as admin to create companies or register new users</H1>
             </H1Box>
+          ) : logAdmin === "false" ? (
+            <H1Box>
+              <H1>Login to have access to your company's units and assets</H1>
+            </H1Box>
+          ) : (
+            <></>
+          )
+        }
 
-            <CompaniesBoxes>
+        <CompaniesBoxes>
 
-              <Form
-                style={{ marginTop: "15px", display: "flex", justifyContent: "center", flexDirection: "column" }}
-                name="normal_login"
-                className="login-form"
-                initialValues={{ remember: true }}
-              >
-                <IdcardOutlined style={{ fontSize: "50px" }} />
-                <Form.Item
-                  style={{ marginTop: "15px" }}
-                  name="e-mail"
-                  rules={[{ required: true, message: 'Please input your Username!' }]}
-                >
-                  <Input
-                    prefix={<UserOutlined
-                      className="site-form-item-icon" />}
-                    placeholder="E-mail"
-                    value={admLogin.email}
-                    onChange={(e) => setAdmLogin({ ...admLogin, email: e.target.value })}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="password"
-                  rules={[{ required: true, message: 'Please input your Password!' }]}
-                >
-                  <Input
-                    prefix={<LockOutlined className="site-form-item-icon" />}
-                    type="password"
-                    placeholder="Password"
-                    value={admLogin.password}
-                    onChange={(e) => setAdmLogin({ ...admLogin, password: e.target.value })}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>Remember me</Checkbox>
-                  </Form.Item>
-                </Form.Item>
+          <Form
+            style={{ marginTop: "15px", display: "flex", justifyContent: "center", flexDirection: "column" }}
+            name="normal_login"
+            className="login-form"
+            initialValues={{ remember: true }}
+          >
+            <IdcardOutlined style={{ fontSize: "50px" }} />
+            <Form.Item
+              style={{ marginTop: "15px" }}
+              name="e-mail"
+              rules={[{ required: true, message: 'Please input your Username!' }]}
+            >
+              <Input
+                prefix={<UserOutlined
+                  className="site-form-item-icon" />}
+                placeholder="E-mail"
+                value={admLogin.email}
+                onChange={(e) => setAdmLogin({ ...admLogin, email: e.target.value })}
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: 'Please input your Password!' }]}
+            >
+              <Input
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                type="password"
+                placeholder="Password"
+                value={admLogin.password}
+                onChange={(e) => setAdmLogin({ ...admLogin, password: e.target.value })}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Form.Item name="remember" valuePropName="checked" noStyle>
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
+            </Form.Item>
 
-                <Form.Item style={{ display: "flex", justifyContent: 'center' }}>
-                  <Button type="primary" htmlType="submit" className="login-form-button" onClick={() => logInAsAdmin()}>
-                    Log in
-                  </Button>
-                </Form.Item>
-              </Form>
-            </CompaniesBoxes>
-          </>
+            <Form.Item style={{ display: "flex", justifyContent: 'center' }}>
+              <Button type="primary" htmlType="submit" className="login-form-button" onClick={() => logInAsAdmin()}>
+                Log in
+              </Button>
+            </Form.Item>
+          </Form>
+        </CompaniesBoxes>
+      </>
     </Body>
   )
 }

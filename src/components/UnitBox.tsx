@@ -1,23 +1,13 @@
-import { useContext } from "react";
 import styled from "styled-components"
 
-import UserContext from "../contexts/userContext";
-
-interface Props {
-  name: String;
-  isAdm: Boolean;
-  key: Number
-}
-
-function CompanyBox( props: Props ) {
-  const { setLogAdmin, setCompanyInfo } = useContext(UserContext)
-  
+function UnitBox(props: any) {
+  console.log("PROPS", props)
   return (
-    <Box onClick={() => {
-      setLogAdmin("false")
-      setCompanyInfo(props)
-    }}>
-      <H2>{props.name}</H2>
+    <Box>
+      <H2>
+        {props.name}
+        {props.assets.length}
+      </H2>
     </Box>
   )
 }
@@ -39,4 +29,5 @@ const H2 = styled.h2`
   text-align: center;
   font-size: 18px;
 `
-export default CompanyBox;
+
+export default UnitBox
