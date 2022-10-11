@@ -1,8 +1,10 @@
+import { useState, useContext } from "react";
 import styled from "styled-components"
+
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import { useState } from "react";
+import CompanyContext from "../contexts/CompanyContext";
 
 import AssetInfoBox from "./AssetInfoBox";
 
@@ -15,7 +17,8 @@ interface Props {
 function UnitBox(props: any) {
   const [status, setStatus] = useState("")
   const [open, setOpen] = useState(false)
-  const [backgroundColor, setBackgroundColor] = useState("")
+  
+  const { backgroundColor, setBackgroundColor } = useContext(CompanyContext)
 
   let runningAssets: any = []
   let alertingAssets: any = []
@@ -37,11 +40,18 @@ function UnitBox(props: any) {
       text: "Unit Assets Status"
     },
 
+    plotOptions: {
+      series: {
+        cursor: 'pointer'
+      }
+    },
+
     series: [{
       data: [{
         name: 'Running',
         y: runningAssets.length,
         color: "rgba(59, 158, 44, 0.9)",
+        cursor: "pointer",
         events: {
           click: (() => {
             setStatus("runningAssets")
@@ -53,6 +63,7 @@ function UnitBox(props: any) {
         name: 'Alert',
         y: alertingAssets.length,
         color: "rgba(180, 190, 40, 0.9)",
+        cursor: "pointer",
         events: {
           click: (() => {
             setStatus("alertingAssets")
@@ -65,6 +76,7 @@ function UnitBox(props: any) {
         name: 'Stopped',
         y: stoppedAssets.length,
         color: "rgba(158, 45, 45, 09)",
+        cursor: "pointer",
         events: {
           click: (() => {
             setStatus("stoppedAssets")
@@ -115,7 +127,7 @@ const Box = styled.div`
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   background-color: white;
-  cursor: pointer;
+  //cursor: pointer;
 `
 const BoxHeader = styled.div`
   display: flex;
@@ -152,9 +164,7 @@ const InfoBox = styled.div.attrs<Props>(props => ({
   align-items: center;
   flex-direction: column;
   width: 260px;
-  //height: 0px;
   border-radius: 8px;
-  //background-color: #dadada;
   transition: height 0.5s;
   overflow: hidden;
 `

@@ -24,5 +24,6 @@ const AssetInfo = styled.div`
   border-radius: 5px;
   border: solid 1px #e7e7e7;
   background-color: #fff;
+  cursor: pointer;
 `
 export default AssetInfoBox
