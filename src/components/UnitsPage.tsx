@@ -8,9 +8,9 @@ import CompanyContext from "../contexts/CompanyContext"
 import UnitBox from "./UnitBox"
 
 function UnitsPage() {
-  const { companyInfo, userToken } = useContext(UserContext)
-  
-  const { setPageControl, units, setUnits } = useContext(CompanyContext)
+  const { userToken } = useContext(UserContext)
+
+  const { setPageControl, units, setUnits, company } = useContext(CompanyContext)
 
   useEffect(() => {
     getCompanyUnits()
@@ -23,7 +23,7 @@ function UnitsPage() {
   }
 
   function getCompanyUnits() {
-    const URL = `http://localhost:5000/get/units/${companyInfo.id}`
+    const URL = `http://localhost:5000/get/units/${company.companyId}`
 
     const promise = axios.get(URL, config)
     promise.then(response => {
@@ -33,18 +33,39 @@ function UnitsPage() {
     promise.catch(err => {
       console.log(err)
     })
-  } 
+  }
 
   return (
-    <CompaniesBoxes>
+    <>
+      <H1Box>
+        <H1>Units: select a unit to manage its assets</H1>
+      </H1Box>
+      <CompaniesBoxes>
         {
           units.map((info: any, index: number) => {
-            return(<UnitBox key={index} {...info} />)
+            return (<UnitBox key={index} {...info} />)
           })
         }
-    </CompaniesBoxes>
+      </CompaniesBoxes>
+    </>
   )
 }
+
+const H1Box = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  height: 10vh;
+  margin-top: 15px;
+  background-color: #0258e8;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+`
+
+const H1 = styled.div`
+  font-size: 25px;
+  color: white;
+`
 
 const CompaniesBoxes = styled.div`
   display: flex;

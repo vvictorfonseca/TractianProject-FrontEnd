@@ -15,30 +15,6 @@ function CompanyBoxAdm( props: Props ) {
   const { companyInfo, setCompanyInfo, userToken } = useContext(UserContext)
   console.log(companyInfo)
 
-  //const companyId = props.id
-
-  // const config = {
-  //   headers: {
-  //     Authorization: `Bearer ${userToken}`
-  //   }
-  // }
-
-  // function getCompanyById() {
-  //   const URL = `http://localhost:5000/get/${companyId}`
-
-  //   const promise = axios.get(URL, config)
-  //   promise.then(response => {
-  //     console.log("entrou no then")
-  //     const { data } = response
-  //     console.log(data)
-  //     setCompanyInfo({...companyInfo, name: data.name})
-  //     setCompanyInfo({...companyInfo, isAdm: data.isAdm})
-  //   })
-  //   promise.catch(err => {
-  //     console.log(err)
-  //   })
-  // }
-
   return (
     <Box onClick={() => setCompanyInfo(props)} >
       <H2>{props.name}</H2>

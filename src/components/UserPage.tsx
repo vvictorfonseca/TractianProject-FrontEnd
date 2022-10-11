@@ -2,20 +2,22 @@ import { useContext, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+
 import UserContext from "../contexts/userContext"
 import CompanyContext from "../contexts/CompanyContext";
 
 import UnitsPage from "./UnitsPage";
+import AssetPage from "./AssetPage";
 
 import { UsergroupAddOutlined, ShopOutlined, RightCircleOutlined, SettingOutlined } from '@ant-design/icons';
 
 function UserPage() {
   const { companyInfo, userToken, userName } = useContext(UserContext)
-  console.log(companyInfo.id)
 
-  const { companyCounts, setCompanyCounts, pageControl, setPageControl } = useContext(CompanyContext)
+  const { companyCounts, setCompanyCounts, pageControl, setPageControl, company } = useContext(CompanyContext)
   console.log(companyCounts)
-
   useEffect(() => {
     getCompanyCounts()
   }, [])
@@ -27,8 +29,7 @@ function UserPage() {
   }
 
   function getCompanyCounts() {
-    console.log("entrou")
-    const URL = `http://localhost:5000/get/countInfos/${companyInfo.id}`
+    const URL = `http://localhost:5000/get/countInfos/${company.companyId}`
 
     const promise = axios.get(URL, config)
     promise.then(response => {
@@ -40,60 +41,87 @@ function UserPage() {
     })
   }
 
+  // const options = {
+  //   chart: {
+  //     type: "column"
+  //   },
+  //   title: {
+  //     text: "Company Overview"
+  //   },
+  //   xAxis: {
+  //     categories: [
+  //       "Units", "Assets", "Users"
+  //     ],
+  //     crosshair: true
+  //   },
+  //   series: [{
+  //     data: [companyCounts.unitCount, companyCounts.assetsCount, companyCounts.usersCount]
+  //   }]
+  // }
+
   return (
     <Body>
-      <H1Box>
-        <H1>Welcome {userName}</H1>
-      </H1Box>
 
       {
         companyCounts === undefined ? (
-          <p>calmae ae</p>
+          <>
+            <H1Box>
+              <H1>Welcome {userName}</H1>
+            </H1Box>
+            <p>calmae ae</p>
+          </>
         ) : pageControl === "" ? (
-          <CompaniesBoxes>
-            <InfoBox>
-              <InfoHeader>{companyInfo.name}</InfoHeader>
-              <CountBoxes>
+          <>
+            <H1Box>
+              <H1>Welcome {userName}</H1>
+            </H1Box>
+            <CompaniesBoxes>
+              <InfoBox>
+                <InfoHeader>{company.name}</InfoHeader>
+                <CountBoxes>
 
-                <CountBox>
-                  <IconBox>
-                    <ShopOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
-                    {companyCounts.unitCount}
-                  </IconBox>
-                  <NameBox>Units</NameBox>
-                  <ArrowBox>
-                    <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} onClick={() => setPageControl("units")} />
-                  </ArrowBox>
-                </CountBox>
+                  <CountBox>
+                    <IconBox>
+                      <ShopOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
+                      {companyCounts.unitCount}
+                    </IconBox>
+                    <NameBox>Units</NameBox>
+                    <ArrowBox>
+                      <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} onClick={() => setPageControl("units")} />
+                    </ArrowBox>
+                  </CountBox>
 
-                <CountBox>
-                  <IconBox>
-                    <SettingOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
-                    {companyCounts.assetsCount}
-                  </IconBox>
-                  <NameBox>Assets</NameBox>
-                  <ArrowBox>
-                    <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
-                  </ArrowBox>
-                </CountBox>
+                  <CountBox>
+                    <IconBox>
+                      <SettingOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
+                      {companyCounts.assetsCount}
+                    </IconBox>
+                    <NameBox>Assets</NameBox>
+                    <ArrowBox>
+                      <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
+                    </ArrowBox>
+                  </CountBox>
 
-                <CountBox>
-                  <IconBox>
-                    <UsergroupAddOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
-                    {companyCounts.usersCount}
-                  </IconBox>
-                  <NameBox>Users</NameBox>
-                  <ArrowBox>
-                    <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
-                  </ArrowBox>
-                </CountBox>
+                  <CountBox>
+                    <IconBox>
+                      <UsergroupAddOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
+                      {companyCounts.usersCount}
+                    </IconBox>
+                    <NameBox>Users</NameBox>
+                    <ArrowBox>
+                      <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
+                    </ArrowBox>
+                  </CountBox>
 
-              </CountBoxes>
-            </InfoBox>
-          </CompaniesBoxes>
+                </CountBoxes>
+              </InfoBox>
+            </CompaniesBoxes>
+          </>
         ) : pageControl === "units" ? (
           <UnitsPage />
-        ) : (
+        ) : pageControl === "assetPage" ? (
+          <AssetPage />
+        ): (
           <></>
         )
       }

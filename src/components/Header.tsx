@@ -1,12 +1,15 @@
 import styled from "styled-components"
 import { useContext } from "react";
+
 import UserContext from "../contexts/userContext";
+import CompanyContext from "../contexts/CompanyContext";
 
 import { Button } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 
 function Header() {
-  const { setLogAdmin, setIsAdm, isAdm, logAdmin, setCompanyInfo } = useContext(UserContext)
+  const { setLogAdmin, setIsAdm, isAdm, logAdmin, setCompanyInfo, setUserName, setUserToken } = useContext(UserContext)
+  const { setPageControl, units, setUnits } = useContext(CompanyContext)
 
   function logOut() {
     if (window.confirm("Você deseja se deslogar?")) {
@@ -18,8 +21,10 @@ function Header() {
       window.localStorage.removeItem('professionalDescription');
       //setIsAdm(false)
       setLogAdmin("")
+      setPageControl("")
       setCompanyInfo(null)
-
+      setUserName(null)
+      setUserToken(null)
     }
   }
 

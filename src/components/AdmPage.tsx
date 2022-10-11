@@ -14,7 +14,6 @@ function AdmPage() {
   const [companyName, setCompanyName] = useState("")
 
   const { userToken, companyInfo, newCompany, setNewCompany } = useContext(UserContext)
-  console.log(userToken)
 
   const config = {
     headers: {
