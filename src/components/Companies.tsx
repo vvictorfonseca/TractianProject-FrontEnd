@@ -9,6 +9,7 @@ function Companies() {
   type company = {
     name: String;
     isAdm: Boolean;
+    id: String;
   }
 
   const { companies, setCompanies } = useContext(UserContext)

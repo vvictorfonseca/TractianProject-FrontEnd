@@ -2,20 +2,27 @@ import { useContext } from "react";
 import styled from "styled-components"
 
 import UserContext from "../contexts/userContext";
+import CompanyContext from "../contexts/CompanyContext";
 
 interface Props {
   name: String;
   isAdm: Boolean;
-  key: Number
+  key: Number;
+  id: String;
 }
 
 function CompanyBox( props: Props ) {
+  console.log(props)
   const { setLogAdmin, setCompanyInfo } = useContext(UserContext)
+  const { companyCounts, setCompanyCounts, pageControl, setPageControl, setCompany } = useContext(CompanyContext)
   
   return (
     <Box onClick={() => {
       setLogAdmin("false")
-      setCompanyInfo(props)
+      setCompany({
+        companyId: props.id,
+        name: props.name
+      })
     }}>
       <H2>{props.name}</H2>
     </Box>

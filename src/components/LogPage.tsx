@@ -3,14 +3,15 @@ import axios from "axios";
 import styled from "styled-components"
 
 import UserContext from "../contexts/userContext";
+import CompanyContext from "../contexts/CompanyContext";
 
 import { LockOutlined, UserOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 
 function LogPage() {
 
-  const { setUserName, setUserToken, setIsAdm, setLogAdmin, logAdmin, companyInfo } = useContext(UserContext)
-  console.log(companyInfo)
+  const { setUserName, setUserToken, setIsAdm, setLogAdmin, logAdmin } = useContext(UserContext)
+  const { company } = useContext(CompanyContext)
   
   interface userData {
     fullName: String;
@@ -38,7 +39,7 @@ function LogPage() {
     if (logAdmin === "true") {
       URL = "http://localhost:5000/adm/signIn"
     } else if (logAdmin === "false") {
-      URL = `http://localhost:5000/signIn/${companyInfo.id}`
+      URL = `http://localhost:5000/signIn/${company.companyId}`
     }
 
     console.log("url", URL)
