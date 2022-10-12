@@ -31,8 +31,6 @@ function CompaniesToCreateUser() {
 
 const Body = styled.div`
   width: 50vw;
-  //height: 100vh;
-  //background-color: purple;
 `
 
 const H1Box = styled.div`

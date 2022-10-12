@@ -13,8 +13,8 @@ interface Props {
 
 function CompanyBox( props: Props ) {
   console.log(props)
-  const { setLogAdmin, setCompanyInfo } = useContext(UserContext)
-  const { companyCounts, setCompanyCounts, pageControl, setPageControl, setCompany } = useContext(CompanyContext)
+  const { setLogAdmin } = useContext(UserContext)
+  const { setCompany } = useContext(CompanyContext)
   
   return (
     <Box onClick={() => {

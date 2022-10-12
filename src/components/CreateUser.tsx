@@ -39,7 +39,7 @@ function CreatUser() {
   }
 
   function createNewUser() {
-    const URL = "http://localhost:5000/create/user"
+    const URL = "https://tractian-project-vh.herokuapp.com/create/user"
 
     const promise = axios.post(URL, objCreateNewUser, config)
     promise.then(response => {
@@ -51,7 +51,6 @@ function CreatUser() {
       console.log(err)
     })
   }
-
 
   return (
     <Body>

@@ -8,8 +8,8 @@ import { Button } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 
 function Header() {
-  const { setLogAdmin, setIsAdm, isAdm, logAdmin, setCompanyInfo, setUserName, setUserToken } = useContext(UserContext)
-  const { setPageControl, units, setUnits, unitName, setUnitName } = useContext(CompanyContext)
+  const { setLogAdmin, isAdm, logAdmin, setCompanyInfo, setUserName, setUserToken } = useContext(UserContext)
+  const { setPageControl, setUnitName } = useContext(CompanyContext)
 
   function logOut() {
     if (window.confirm("Você deseja se deslogar?")) {
@@ -19,7 +19,7 @@ function Header() {
       window.localStorage.removeItem('photo');
       window.localStorage.removeItem('userName');
       window.localStorage.removeItem('professionalDescription');
-      //setIsAdm(false)
+      
       setLogAdmin("")
       setPageControl("")
       setCompanyInfo(null)

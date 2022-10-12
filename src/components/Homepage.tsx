@@ -13,20 +13,17 @@ import UserPage from "./UserPage";
 
 function HomePage() {
   const { logAdmin, setLogAdmin, isAdm, setIsAdm, userName } = useContext(UserContext)
-  const { company, setCompany } = useContext(CompanyContext)
-  console.log(userName)
+  const { setCompany } = useContext(CompanyContext)
 
   useEffect(() => {
     checkLoginStatus()
   }, [])
 
   function checkLoginStatus() {
-    console.log("entrou na função")
-    const URL = `http://localhost:5000/user/${userName}`
+    const URL = `https://tractian-project-vh.herokuapp.com/user/${userName}`
 
     const promise = axios.get(URL)
     promise.then(response => {
-      console.log("entrou")
       const { data } = response
       setLogAdmin(null)
       setCompany({

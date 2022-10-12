@@ -37,17 +37,14 @@ function LogPage() {
     let URL = ""
 
     if (logAdmin === "true") {
-      URL = "http://localhost:5000/adm/signIn"
+      URL = "https://tractian-project-vh.herokuapp.com/adm/signIn"
     } else if (logAdmin === "false") {
-      URL = `http://localhost:5000/signIn/${company.companyId}`
+      URL = `https://tractian-project-vh.herokuapp.com/signIn/${company.companyId}`
     }
-
-    console.log("url", URL)
 
     const promise = axios.post(URL, objLogin)
     promise.then(response => {
       const { data } = response
-      console.log(data)
       const token: string = JSON.stringify(data.token)
       const userName: string = JSON.stringify(data.fullName)
       localStorage.setItem('token', token)

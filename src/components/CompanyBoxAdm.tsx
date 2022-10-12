@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import axios from "axios";
 import styled from "styled-components"
 
 import UserContext from "../contexts/userContext";
@@ -12,8 +11,7 @@ interface Props {
 }
 
 function CompanyBoxAdm( props: Props ) {
-  const { companyInfo, setCompanyInfo, userToken } = useContext(UserContext)
-  console.log(companyInfo)
+  const { setCompanyInfo } = useContext(UserContext)
 
   return (
     <Box onClick={() => setCompanyInfo(props)} >

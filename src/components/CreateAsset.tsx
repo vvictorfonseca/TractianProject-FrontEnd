@@ -1,15 +1,13 @@
-import { useState, useContext, useEffect } from "react"
+import { useState, useContext } from "react"
 import axios from "axios"
 import styled from "styled-components"
 
-import { PlusOutlined } from '@ant-design/icons';
 import {
   Form,
   Input,
   Button,
   DatePicker,
   InputNumber,
-  Alert
 } from 'antd';
 
 import { SettingOutlined } from '@ant-design/icons';
@@ -17,18 +15,14 @@ import { SettingOutlined } from '@ant-design/icons';
 import CompanyContext, { AssetInfo } from "../contexts/CompanyContext"
 import UserContext from "../contexts/userContext"
 
-const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-
 
 function CreateAsset() {
   const { userToken } = useContext(UserContext)
-  const { assetInfo, company, unitName, unitId, setCreateForm, refreshCompanyData, setRefreshCompanyData, setPageControl } = useContext(CompanyContext)
+  const { assetInfo, company, setCreateForm, refreshCompanyData, setRefreshCompanyData, setPageControl } = useContext(CompanyContext)
   const asset: AssetInfo = assetInfo
-  console.log("asset", asset)
 
   const [value, setValue] = useState<string | number | null>("");
-  console.log("value", value)
 
   interface CreateAssetInfo {
     description: string;
@@ -70,25 +64,19 @@ function CreateAsset() {
   }
 
   function createNewAsset() {
-    const URL = "http://localhost:5000/create/asset"
+    const URL = "https://tractian-project-vh.herokuapp.com/create/asset"
 
     if (objCreateAsset.healthLevel !== null && objCreateAsset.healthLevel < 20) {
       objCreateAsset.status = "Stopped"
-      console.log("obj na função", objCreateAsset)
     } else if (objCreateAsset.healthLevel !== null && objCreateAsset.healthLevel < 60) {
       objCreateAsset.status = "Alerting"
-      console.log("obj na função", objCreateAsset)
     } else {
       objCreateAsset.status = "Running"
-      console.log("obj na função", objCreateAsset)
     }
 
-    console.log("obj fora do if", objCreateAsset)
-
     const promise = axios.post(URL, objCreateAsset, config)
-    promise.then(reponse => {
-      console.log("deu booooooooooom")
-      alert("Asset Criado")
+    promise.then(() => {
+      alert("Asset Created")
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setPageControl("")
       setCreateForm(false)

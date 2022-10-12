@@ -30,11 +30,11 @@ function CreateUnit() {
   }
 
   function createUnit() {
-    const URL = "http://localhost:5000/create/unit"
+    const URL = "https://tractian-project-vh.herokuapp.com/create/unit"
 
     const promise = axios.post(URL, objNewCompany, config)
     promise.then(() => {
-      alert(`New unit create on company ${company.name}`)
+      alert(`New unit created on company ${company.name}`)
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setOpenNewUnitForm(false)
       setPageControl("")

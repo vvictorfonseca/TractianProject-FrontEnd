@@ -10,8 +10,7 @@ import CreateUnit from "./CreateUnit"
 
 function UnitsPage() {
   const { userToken } = useContext(UserContext)
-
-  const { setPageControl, units, setUnits, company, refreshCompanyData, openNewUnitForm } = useContext(CompanyContext)
+  const { units, setUnits, company, refreshCompanyData, openNewUnitForm } = useContext(CompanyContext)
 
   useEffect(() => {
     getCompanyUnits()
@@ -24,7 +23,7 @@ function UnitsPage() {
   }
 
   function getCompanyUnits() {
-    const URL = `http://localhost:5000/get/units/${company.companyId}`
+    const URL = `https://tractian-project-vh.herokuapp.com/get/units/${company.companyId}`
 
     const promise = axios.get(URL, config)
     promise.then(response => {

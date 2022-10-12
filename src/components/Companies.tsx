@@ -19,7 +19,7 @@ function Companies() {
   }, [])
 
   function getCompanies() {
-    const URL = "http://localhost:5000/get/companies"
+    const URL = "https://tractian-project-vh.herokuapp.com/get/companies"
 
     const promise = axios.get(URL)
     promise.then(response => {

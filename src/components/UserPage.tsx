@@ -2,9 +2,6 @@ import { useContext, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-
 import UserContext from "../contexts/userContext"
 import CompanyContext from "../contexts/CompanyContext";
 
@@ -14,10 +11,9 @@ import AssetPage from "./AssetPage";
 import { UsergroupAddOutlined, ShopOutlined, RightCircleOutlined, SettingOutlined } from '@ant-design/icons';
 
 function UserPage() {
-  const { companyInfo, userToken, userName } = useContext(UserContext)
-
+  const { userToken, userName } = useContext(UserContext)
   const { companyCounts, setCompanyCounts, pageControl, setPageControl, company, refreshCompanyData } = useContext(CompanyContext)
-  console.log(companyCounts)
+  
   useEffect(() => {
     getCompanyCounts()
   }, [refreshCompanyData])
@@ -29,7 +25,7 @@ function UserPage() {
   }
 
   function getCompanyCounts() {
-    const URL = `http://localhost:5000/get/countInfos/${company.companyId}`
+    const URL = `https://tractian-project-vh.herokuapp.com/get/countInfos/${company.companyId}`
 
     const promise = axios.get(URL, config)
     promise.then(response => {
@@ -50,7 +46,9 @@ function UserPage() {
             <H1Box>
               <H1>Welcome {userName}</H1>
             </H1Box>
-            <p>calmae ae</p>
+            <CompaniesBoxes>
+
+            </CompaniesBoxes>
           </>
         ) : pageControl === "" ? (
           <>
@@ -73,7 +71,7 @@ function UserPage() {
                     </ArrowBox>
                   </CountBox>
 
-                  <CountBox style={{ background: "rgba(172, 172, 165, 0.3)"}}>
+                  <CountBox style={{ background: "rgba(172, 172, 165, 0.3)" }}>
                     <IconBox>
                       <SettingOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
                       {companyCounts.assetsCount}
@@ -84,7 +82,7 @@ function UserPage() {
                     </ArrowBox>
                   </CountBox>
 
-                  <CountBox style={{ background: "rgba(172, 172, 165, 0.3)"}}>
+                  <CountBox style={{ background: "rgba(172, 172, 165, 0.3)" }}>
                     <IconBox>
                       <UsergroupAddOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
                       {companyCounts.usersCount}
@@ -103,7 +101,7 @@ function UserPage() {
           <UnitsPage />
         ) : pageControl === "assetPage" ? (
           <AssetPage />
-        ): (
+        ) : (
           <></>
         )
       }
@@ -113,8 +111,6 @@ function UserPage() {
 
 const Body = styled.div`
   width: 50vw;
-  //height: 100vh;
-  //background-color: purple;
 `
 
 const H1Box = styled.div`

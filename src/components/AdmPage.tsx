@@ -30,7 +30,7 @@ function AdmPage() {
   }
 
   function createNewCompany()  {
-    const URL = "http://localhost:5000/create/company"
+    const URL = "https://tractian-project-vh.herokuapp.com/create/company"
 
     const promise = axios.post(URL, objNewCompany, config)
     promise.then(response => {

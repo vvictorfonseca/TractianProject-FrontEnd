@@ -1,14 +1,9 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import axios from "axios";
 import styled from "styled-components"
 
-import { Progress } from 'antd';
-import { Switch } from 'antd';
-import { InputNumber } from 'antd';
-import { Tooltip } from 'antd';
+import { Progress, Switch, InputNumber, Tooltip, Button, Modal, Alert  } from 'antd';
 import { LeftCircleOutlined, PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, SendOutlined } from '@ant-design/icons';
-import { Button, Modal, Space } from 'antd';
-import { Alert } from 'antd';
 
 import UserContext from "../contexts/userContext";
 import CompanyContext, { AssetInfo } from "../contexts/CompanyContext"
@@ -18,18 +13,14 @@ import CreateAsset from "./CreateAsset";
 const { confirm } = Modal;
 
 function AssetPage() {
-  const { assetInfo, backgroundColor, setBackgroundColor, setPageControl, company, refreshCompanyData, setRefreshCompanyData, createForm, setCreateForm } = useContext(CompanyContext)
+  const { assetInfo, backgroundColor, setBackgroundColor, setPageControl, refreshCompanyData, setRefreshCompanyData, createForm, setCreateForm } = useContext(CompanyContext)
   const asset: AssetInfo = assetInfo
 
   const { userToken } = useContext(UserContext)
 
   const [updateOpen, setUpdateOpen] = useState(false)
   const [value, setValue] = useState<number | null>(asset.healthLevel);
-  console.log("value", value)
-
   const [status, setStatus] = useState<string | null>(null)
-
-  
 
   const onChange = (checked: boolean) => {
     !checked ? setUpdateOpen(false) : setUpdateOpen(true)
@@ -61,11 +52,13 @@ function AssetPage() {
   }
 
   function updateHealthLevel() {
-    const URL = `http://localhost:5000/update/healthLevel`
+    const URL = `https://tractian-project-vh.herokuapp.com/update/healthLevel`
 
     const promise = axios.put(URL, objUpdateHealthLevel, config)
-    promise.then(response => {
+    promise.then(() => {
+      
       let newStatus: string | null
+      
       if(value !== null && value < 20) {
         setStatus("Stopped")
         newStatus = "Stopped"
@@ -79,7 +72,7 @@ function AssetPage() {
         newStatus = "Running"
         setBackgroundColor("rgba(59, 158, 44, 0.5)")
       }
-      console.log("atualizou")
+      
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       updateStatus(newStatus)
     }).catch(err => {
@@ -93,21 +86,20 @@ function AssetPage() {
   }
 
   function updateStatus(status: string) {
-    const URL = `http://localhost:5000/update/status`
+    const URL = `https://tractian-project-vh.herokuapp.com/update/status`
 
     objUpdate.status = status
 
     const promise = axios.put(URL, objUpdate, config)
-    promise.then(response => {
-      console.log("atualizou o status")
-      alert("Updated")
+    promise.then(() => {
+      
     }).catch(err => {
       console.log(err)
     })
   }
 
   function deleteAsset() {
-    const URL = `http://localhost:5000/delete/${asset.id}`
+    const URL = `https://tractian-project-vh.herokuapp.com/delete/${asset.id}`
 
     const promise = axios.delete(URL, config)
     promise.then(() => {

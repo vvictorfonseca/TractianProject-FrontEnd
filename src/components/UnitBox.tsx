@@ -5,7 +5,7 @@ import styled from "styled-components"
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import { Tooltip, Modal, Alert } from 'antd';
+import { Tooltip, Modal } from 'antd';
 import { LeftCircleOutlined, PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import UserContext from "../contexts/userContext";
@@ -22,13 +22,11 @@ interface Props {
 const { confirm } = Modal;
 
 function UnitBox(props: any) {
-  console.log("propsUnits", props)
   const [status, setStatus] = useState("")
   const [open, setOpen] = useState(false)
 
   const { userToken } = useContext(UserContext)
-
-  const { comapny, backgroundColor, setBackgroundColor, setPageControl, refreshCompanyData, setRefreshCompanyData, openNewUnitForm, setOpenNewUnitForm } = useContext(CompanyContext)
+  const { backgroundColor, setBackgroundColor, setPageControl, refreshCompanyData, setRefreshCompanyData, openNewUnitForm, setOpenNewUnitForm } = useContext(CompanyContext)
 
   const unitNameStringfy: string = JSON.stringify(props.name)
   localStorage.setItem('unitName', unitNameStringfy)
@@ -54,7 +52,7 @@ function UnitBox(props: any) {
   }
 
   function deleteUnit() {
-    const URL = `http://localhost:5000/delete/unit/${props.id}`
+    const URL = `https://tractian-project-vh.herokuapp.com/delete/unit/${props.id}`
 
     const promise = axios.delete(URL, config)
     promise.then(response => {
