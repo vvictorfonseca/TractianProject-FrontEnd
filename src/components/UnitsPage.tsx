@@ -44,7 +44,7 @@ function UnitsPage() {
         ) : (
           <>
             <H1Box>
-              <H1>Units: select a unit to manage its assets</H1>
+              <H1>Select a status to see its assets and click it to manage</H1>
             </H1Box>
             <CompaniesBoxes>
               {

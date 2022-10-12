@@ -73,25 +73,25 @@ function UserPage() {
                     </ArrowBox>
                   </CountBox>
 
-                  <CountBox>
+                  <CountBox style={{ background: "rgba(172, 172, 165, 0.3)"}}>
                     <IconBox>
                       <SettingOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
                       {companyCounts.assetsCount}
                     </IconBox>
                     <NameBox>Assets</NameBox>
                     <ArrowBox>
-                      <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
+                      {/* <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} /> */}
                     </ArrowBox>
                   </CountBox>
 
-                  <CountBox>
+                  <CountBox style={{ background: "rgba(172, 172, 165, 0.3)"}}>
                     <IconBox>
                       <UsergroupAddOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
                       {companyCounts.usersCount}
                     </IconBox>
                     <NameBox>Users</NameBox>
                     <ArrowBox>
-                      <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
+                      {/* <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} /> */}
                     </ArrowBox>
                   </CountBox>
 
