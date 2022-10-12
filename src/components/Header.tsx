@@ -9,7 +9,7 @@ import { UserOutlined } from '@ant-design/icons';
 
 function Header() {
   const { setLogAdmin, setIsAdm, isAdm, logAdmin, setCompanyInfo, setUserName, setUserToken } = useContext(UserContext)
-  const { setPageControl, units, setUnits } = useContext(CompanyContext)
+  const { setPageControl, units, setUnits, unitName, setUnitName } = useContext(CompanyContext)
 
   function logOut() {
     if (window.confirm("Você deseja se deslogar?")) {
@@ -25,6 +25,7 @@ function Header() {
       setCompanyInfo(null)
       setUserName(null)
       setUserToken(null)
+      setUnitName("")
     }
   }
 

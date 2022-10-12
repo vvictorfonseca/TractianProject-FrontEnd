@@ -1,9 +1,14 @@
 import { useState, useContext } from "react";
+import axios from "axios";
 import styled from "styled-components"
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
+import { Tooltip, Modal, Alert } from 'antd';
+import { LeftCircleOutlined, PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+
+import UserContext from "../contexts/userContext";
 import CompanyContext from "../contexts/CompanyContext";
 
 import AssetInfoBox from "./AssetInfoBox";
@@ -14,11 +19,53 @@ interface Props {
   backgroundColor: string;
 }
 
+const { confirm } = Modal;
+
 function UnitBox(props: any) {
+  console.log("propsUnits", props)
   const [status, setStatus] = useState("")
   const [open, setOpen] = useState(false)
-  
-  const { backgroundColor, setBackgroundColor } = useContext(CompanyContext)
+
+  const { userToken } = useContext(UserContext)
+
+  const { comapny, backgroundColor, setBackgroundColor, setPageControl, refreshCompanyData, setRefreshCompanyData, openNewUnitForm, setOpenNewUnitForm } = useContext(CompanyContext)
+
+  const unitNameStringfy: string = JSON.stringify(props.name)
+  localStorage.setItem('unitName', unitNameStringfy)
+
+  const showConfirm = () => {
+    confirm({
+      title: `Do you Want to delete ${props.name} ?`,
+      icon: <ExclamationCircleOutlined />,
+      content: 'This unit will be deleted from your company data',
+      onOk() {
+        deleteUnit()
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userToken}`
+    }
+  }
+
+  function deleteUnit() {
+    const URL = `http://localhost:5000/delete/${props.id}`
+
+    const promise = axios.delete(URL, config)
+    promise.then(response => {
+      alert("aloooou")
+      refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
+      setPageControl("")
+    })
+    promise.catch(err => {
+      console.log(err)
+    })
+  }
 
   let runningAssets: any = []
   let alertingAssets: any = []
@@ -111,6 +158,24 @@ function UnitBox(props: any) {
           )
         }
       </InfoBox>
+
+      <Footer>
+        <Tooltip title="Return">
+          <ButtonBox style={{ borderRight: "solid 1px #dadada", cursor: 'pointer' }} onClick={() => setPageControl("")} >
+            <LeftCircleOutlined style={{ fontSize: "16px" }} />
+          </ButtonBox>
+        </Tooltip>
+        <Tooltip title="Create Unit">
+          <ButtonBox style={{ border: "solid 1px #dadada", backgroundColor: "#0258e8", cursor: 'pointer' }} onClick={() => setOpenNewUnitForm(true)} >
+            <PlusCircleOutlined style={{ fontSize: "16px", color: "#fff" }} />
+          </ButtonBox>
+        </Tooltip>
+        <Tooltip title="Delete Unit">
+          <ButtonBox style={{ borderLeft: "solid 1px #dadada", cursor: 'pointer' }} onClick={showConfirm}>
+            <DeleteOutlined style={{ fontSize: "16px" }} />
+          </ButtonBox>
+        </Tooltip>
+      </Footer>
     </Box>
   )
 }
@@ -171,6 +236,26 @@ const InfoBox = styled.div.attrs<Props>(props => ({
 const Span = styled.span`
   font-size: 14px;
   margin-left: 5px;
+`
+const Footer = styled.div`
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 260px;
+  height: 40px;
+  border-radius: 8px;
+  border: solid 1px #dadada;
+  //background-color: gray;
+  //margin-bottom: 15px;
+`
+const ButtonBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  width: 40px;
+  height: 40px;
 `
 
 export default UnitBox

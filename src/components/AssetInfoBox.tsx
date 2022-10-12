@@ -5,6 +5,7 @@ import CompanyContext from "../contexts/CompanyContext"
 
 function AssetInfoBox(props: any) {
   const { setPageControl, setAssetInfo } = useContext(CompanyContext)
+  console.log("assetInfo", props)
   
   return (
     <AssetInfo onClick={() => {

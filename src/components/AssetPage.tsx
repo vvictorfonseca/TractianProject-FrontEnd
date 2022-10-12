@@ -1,94 +1,162 @@
 import { useContext, useState } from "react"
+import axios from "axios";
 import styled from "styled-components"
-import { AssetInfo } from "../contexts/CompanyContext"
 
 import { Progress } from 'antd';
 import { Switch } from 'antd';
 import { InputNumber } from 'antd';
 import { Tooltip } from 'antd';
+import { LeftCircleOutlined, PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Modal, Space } from 'antd';
+import { Alert } from 'antd';
 
-import CompanyContext from "../contexts/CompanyContext"
+import UserContext from "../contexts/userContext";
+import CompanyContext, { AssetInfo } from "../contexts/CompanyContext"
+
+import CreateAsset from "./CreateAsset";
+
+const { confirm } = Modal;
 
 function AssetPage() {
-  const { assetInfo, backgroundColor } = useContext(CompanyContext)
+  const { assetInfo, backgroundColor, setPageControl, company, refreshCompanyData, setRefreshCompanyData, createForm, setCreateForm } = useContext(CompanyContext)
   const asset: AssetInfo = assetInfo
+
+  const { userToken } = useContext(UserContext)
 
   const [updateOpen, setUpdateOpen] = useState(false)
   const [value, setValue] = useState<string | number | null>(asset.healthLevel);
-  console.log(value)
 
   const onChange = (checked: boolean) => {
     !checked ? setUpdateOpen(false) : setUpdateOpen(true)
   };
 
+  const showConfirm = () => {
+    confirm({
+      title: 'Do you Want to delete this Asset?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'This asset will be deleted from your unit data',
+      onOk() {
+        deleteAsset();
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userToken}`
+    }
+  }
+
+  function deleteAsset() {
+    const URL = `http://localhost:5000/delete/${asset.id}`
+
+    const promise = axios.delete(URL, config)
+    promise.then(() => {
+      <Alert message="Successfully Deleted" type="success" showIcon />
+      refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
+      setPageControl("")
+    })
+    promise.catch(err => {
+      console.log(err)
+    })
+  }
+
   return (
     <Body>
-      <H1Box>
-        <H1>Asset management page</H1>
-      </H1Box>
+      {
+        createForm ? (
+          <CreateAsset />
+        ) : (
+          <>
+            <H1Box>
+              <H1>Asset management page</H1>
+            </H1Box >
 
-      <CompaniesBoxes>
+            <CompaniesBoxes>
 
-        <AssetBox>
+              <AssetBox>
 
-          <DivideInfos>
+                <DivideInfos>
 
-            <PrimaryInfos style={{ backgroundColor: backgroundColor }}>
-              <Info>Name: {asset.name}</Info>
-              <Info>Model: {asset.model}</Info>
-            </PrimaryInfos>
+                  <PrimaryInfos style={{ backgroundColor: backgroundColor }}>
+                    <Info>Name: {asset.name}</Info>
+                    <Info>Model: {asset.model}</Info>
+                  </PrimaryInfos>
 
-            <StatusBoX>
-              <DivideStausBox>
-                <Status>Status</Status>
-              </DivideStausBox>
+                  <StatusBoX>
+                    <DivideStausBox>
+                      <Status>Status</Status>
+                    </DivideStausBox>
 
-              <DivideStausBox>
-                <StatusName>{asset.status}</StatusName>
-                <ColorBox style={{ backgroundColor: backgroundColor, boxShadow: `0 0 10px ${backgroundColor}` }}></ColorBox>
-              </DivideStausBox>
-            </StatusBoX>
+                    <DivideStausBox>
+                      <StatusName>{asset.status}</StatusName>
+                      <ColorBox style={{ backgroundColor: backgroundColor, boxShadow: `0 0 10px ${backgroundColor}` }}></ColorBox>
+                    </DivideStausBox>
+                  </StatusBoX>
 
-          </DivideInfos>
+                </DivideInfos>
 
-          <Line></Line>
+                <Line></Line>
 
-          <DivideInfos>
-            <PrimaryInfos style={{ backgroundColor: backgroundColor }}>
-              <Info>Description: {asset.description}</Info>
-            </PrimaryInfos>
+                <DivideInfos>
+                  <PrimaryInfos style={{ backgroundColor: backgroundColor }}>
+                    <Info>Description: {asset.description}</Info>
+                  </PrimaryInfos>
 
-            <StatusBoX>
-              <DivideStausBox>
-                <Status>Health Level</Status>
-              </DivideStausBox>
+                  <StatusBoX>
+                    <DivideStausBox>
+                      <Status>Health Level</Status>
+                    </DivideStausBox>
 
-              <DivideStausBox>
-                <UpdateBox>
-                  <Tooltip title="click to update">
-                  <Switch style={{ marginLeft: "5px", fontSize: "10px" }} onChange={onChange} size={'small'} />
-                  </Tooltip>
-                  {
-                    updateOpen ? (
-                      <UpdateInput>
-                        <InputNumber size={'small'} min={1} max={100} value={value} onChange={setValue} />
-                      </UpdateInput>
-                    ) : (
-                      <></>
-                    )
-                    }
-                </UpdateBox>
-                <ProgressBox>
-                  <Progress style={{ paddingLeft: "10px", paddingRight: "10px" }} percent={asset.healthLevel} status="active" />
-                </ProgressBox>
-              </DivideStausBox>
-            </StatusBoX>
-          </DivideInfos>
+                    <DivideStausBox>
+                      <UpdateBox>
+                        <Tooltip title="click to update">
+                          <Switch style={{ marginLeft: "5px", fontSize: "10px" }} onChange={onChange} size={'small'} />
+                        </Tooltip>
+                        {
+                          updateOpen ? (
+                            <UpdateInput>
+                              <InputNumber size={'small'} min={1} max={100} value={value} onChange={setValue} />
+                            </UpdateInput>
+                          ) : (
+                            <></>
+                          )
+                        }
+                      </UpdateBox>
+                      <ProgressBox>
+                        <Progress style={{ paddingLeft: "10px", paddingRight: "10px" }} percent={asset.healthLevel} status="active" />
+                      </ProgressBox>
+                    </DivideStausBox>
+                  </StatusBoX>
+                </DivideInfos>
+              </AssetBox>
 
-        </AssetBox>
+              <Footer>
+                <Tooltip title="Return">
+                  <ButtonBox style={{ borderRight: "solid 1px #dadada", cursor: 'pointer' }} onClick={() => setPageControl("units")}>
+                    <LeftCircleOutlined style={{ fontSize: "20px" }} />
+                  </ButtonBox>
+                </Tooltip>
+                <Tooltip title="Create Asset">
+                  <ButtonBox style={{ border: "solid 1px #dadada", backgroundColor: "#0258e8", cursor: 'pointer' }} onClick={() => setCreateForm(true)}>
+                    <PlusCircleOutlined style={{ fontSize: "20px", color: "#fff" }} />
+                  </ButtonBox>
+                </Tooltip>
+                <Tooltip title="Delete Asset">
+                  <ButtonBox style={{ borderLeft: "solid 1px #dadada", cursor: 'pointer' }} onClick={showConfirm}>
+                    <DeleteOutlined style={{ fontSize: "20px" }} />
+                  </ButtonBox>
+                </Tooltip>
+              </Footer>
 
-      </CompaniesBoxes>
-    </Body>
+            </CompaniesBoxes>
+          </>
+        )
+      }
+    </Body >
   )
 }
 
@@ -227,6 +295,27 @@ const UpdateInput = styled.div`
   display: flex;
   transition: height 2s;
   overflow: hidden;
+`
+const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 45vw;
+  height: 8vh;
+  border-radius: 8px;
+  border: solid 1px #dadada;
+  //background-color: gray;
+  margin-bottom: 15px;
+`
+const ButtonBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  //border-right: solid 1px #dadada;
+  border-radius: 100px;
+  width: 5vw;
+  height: 8vh;
+  //background-color: green;
 `
 
 export default AssetPage

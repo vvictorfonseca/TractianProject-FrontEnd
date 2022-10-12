@@ -23,6 +23,7 @@ export interface AssetInfo {
   owner: string;
   status: string;
   image: string;
+  unitId: string;
 }
 
 export function CompanyProvider({ children }: any) {
@@ -32,9 +33,17 @@ export function CompanyProvider({ children }: any) {
   const [company, setCompany] = useState<Company>()
   const [assetInfo, setAssetInfo] = useState<AssetInfo>()
   const [backgroundColor, setBackgroundColor] = useState<string>("")
+  const [refreshCompanyData, setRefreshCompanyData] = useState<boolean>(false)
+
+  const unitNameStorage: any = localStorage.getItem('unitName');
+  const unitNameParse: string = JSON.parse(unitNameStorage)
+  const [unitName, setUnitName] = useState(unitNameParse)
+  const [unitId, setUnitId] = useState("")
+  const [createForm, setCreateForm] = useState(false)
+  const [openNewUnitForm, setOpenNewUnitForm] = useState(false)
 
   return (
-    <CompanyContext.Provider value={{ companyCounts, setCompanyCounts, pageControl, setPageControl, units, setUnits, company, setCompany, assetInfo, setAssetInfo, backgroundColor, setBackgroundColor }}>
+    <CompanyContext.Provider value={{ companyCounts, setCompanyCounts, pageControl, setPageControl, units, setUnits, company, setCompany, assetInfo, setAssetInfo, backgroundColor, setBackgroundColor, refreshCompanyData, setRefreshCompanyData, unitName, setUnitName, unitId, setUnitId, createForm, setCreateForm, openNewUnitForm, setOpenNewUnitForm }}>
       { children }
     </CompanyContext.Provider>
   );

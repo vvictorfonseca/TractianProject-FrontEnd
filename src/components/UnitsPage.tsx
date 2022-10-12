@@ -6,15 +6,16 @@ import UserContext from "../contexts/userContext"
 import CompanyContext from "../contexts/CompanyContext"
 
 import UnitBox from "./UnitBox"
+import CreateUnit from "./CreateUnit"
 
 function UnitsPage() {
   const { userToken } = useContext(UserContext)
 
-  const { setPageControl, units, setUnits, company } = useContext(CompanyContext)
+  const { setPageControl, units, setUnits, company, refreshCompanyData, openNewUnitForm } = useContext(CompanyContext)
 
   useEffect(() => {
     getCompanyUnits()
-  }, [])
+  }, [refreshCompanyData])
 
   const config = {
     headers: {
@@ -37,16 +38,24 @@ function UnitsPage() {
 
   return (
     <>
-      <H1Box>
-        <H1>Units: select a unit to manage its assets</H1>
-      </H1Box>
-      <CompaniesBoxes>
-        {
-          units.map((info: any, index: number) => {
-            return (<UnitBox key={index} {...info} />)
-          })
-        }
-      </CompaniesBoxes>
+      {
+        openNewUnitForm ? (
+          <CreateUnit />
+        ) : (
+          <>
+            <H1Box>
+              <H1>Units: select a unit to manage its assets</H1>
+            </H1Box>
+            <CompaniesBoxes>
+              {
+                units.map((info: any, index: number) => {
+                  return (<UnitBox key={index} {...info} />)
+                })
+              }
+            </CompaniesBoxes>
+          </>
+        )
+      }
     </>
   )
 }

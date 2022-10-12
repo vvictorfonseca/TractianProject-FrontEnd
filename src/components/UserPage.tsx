@@ -16,11 +16,11 @@ import { UsergroupAddOutlined, ShopOutlined, RightCircleOutlined, SettingOutline
 function UserPage() {
   const { companyInfo, userToken, userName } = useContext(UserContext)
 
-  const { companyCounts, setCompanyCounts, pageControl, setPageControl, company } = useContext(CompanyContext)
+  const { companyCounts, setCompanyCounts, pageControl, setPageControl, company, refreshCompanyData } = useContext(CompanyContext)
   console.log(companyCounts)
   useEffect(() => {
     getCompanyCounts()
-  }, [])
+  }, [refreshCompanyData])
 
   const config = {
     headers: {
@@ -40,24 +40,6 @@ function UserPage() {
       console.log(err)
     })
   }
-
-  // const options = {
-  //   chart: {
-  //     type: "column"
-  //   },
-  //   title: {
-  //     text: "Company Overview"
-  //   },
-  //   xAxis: {
-  //     categories: [
-  //       "Units", "Assets", "Users"
-  //     ],
-  //     crosshair: true
-  //   },
-  //   series: [{
-  //     data: [companyCounts.unitCount, companyCounts.assetsCount, companyCounts.usersCount]
-  //   }]
-  // }
 
   return (
     <Body>
