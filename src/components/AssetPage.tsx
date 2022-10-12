@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios";
 import styled from "styled-components"
 
@@ -6,7 +6,7 @@ import { Progress } from 'antd';
 import { Switch } from 'antd';
 import { InputNumber } from 'antd';
 import { Tooltip } from 'antd';
-import { LeftCircleOutlined, PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { LeftCircleOutlined, PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, SendOutlined } from '@ant-design/icons';
 import { Button, Modal, Space } from 'antd';
 import { Alert } from 'antd';
 
@@ -18,13 +18,18 @@ import CreateAsset from "./CreateAsset";
 const { confirm } = Modal;
 
 function AssetPage() {
-  const { assetInfo, backgroundColor, setPageControl, company, refreshCompanyData, setRefreshCompanyData, createForm, setCreateForm } = useContext(CompanyContext)
+  const { assetInfo, backgroundColor, setBackgroundColor, setPageControl, company, refreshCompanyData, setRefreshCompanyData, createForm, setCreateForm } = useContext(CompanyContext)
   const asset: AssetInfo = assetInfo
 
   const { userToken } = useContext(UserContext)
 
   const [updateOpen, setUpdateOpen] = useState(false)
-  const [value, setValue] = useState<string | number | null>(asset.healthLevel);
+  const [value, setValue] = useState<number | null>(asset.healthLevel);
+  console.log("value", value)
+
+  const [status, setStatus] = useState<string | null>(null)
+
+  
 
   const onChange = (checked: boolean) => {
     !checked ? setUpdateOpen(false) : setUpdateOpen(true)
@@ -48,6 +53,57 @@ function AssetPage() {
     headers: {
       Authorization: `Bearer ${userToken}`
     }
+  }
+
+  const objUpdateHealthLevel = {
+    id: asset.id,
+    healthLevel: value
+  }
+
+  function updateHealthLevel() {
+    const URL = `http://localhost:5000/update/healthLevel`
+
+    const promise = axios.put(URL, objUpdateHealthLevel, config)
+    promise.then(response => {
+      let newStatus: string | null
+      if(value !== null && value < 20) {
+        setStatus("Stopped")
+        newStatus = "Stopped"
+        setBackgroundColor("rgba(158, 45, 45, 0.5)")
+      } else if (value !== null && value < 60) {
+        setStatus("Alerting")
+        newStatus = "Alerting"
+        setBackgroundColor("rgba(180, 190, 40, 0.5)")
+      } else {
+        setStatus("Running")
+        newStatus = "Running"
+        setBackgroundColor("rgba(59, 158, 44, 0.5)")
+      }
+      console.log("atualizou")
+      refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
+      updateStatus(newStatus)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  const objUpdate = {
+    id: asset.id,
+    status: status
+  }
+
+  function updateStatus(status: string) {
+    const URL = `http://localhost:5000/update/status`
+
+    objUpdate.status = status
+
+    const promise = axios.put(URL, objUpdate, config)
+    promise.then(response => {
+      console.log("atualizou o status")
+      alert("Updated")
+    }).catch(err => {
+      console.log(err)
+    })
   }
 
   function deleteAsset() {
@@ -92,7 +148,7 @@ function AssetPage() {
                     </DivideStausBox>
 
                     <DivideStausBox>
-                      <StatusName>{asset.status}</StatusName>
+                      <StatusName>{status?? assetInfo.status}</StatusName>
                       <ColorBox style={{ backgroundColor: backgroundColor, boxShadow: `0 0 10px ${backgroundColor}` }}></ColorBox>
                     </DivideStausBox>
                   </StatusBoX>
@@ -120,6 +176,7 @@ function AssetPage() {
                           updateOpen ? (
                             <UpdateInput>
                               <InputNumber size={'small'} min={1} max={100} value={value} onChange={setValue} />
+                              <Button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: "5px" }} type="primary" shape="circle" icon={<SendOutlined style={{ marginLeft: "3px", fontSize: "12px" }} />} size='small' onClick={() => updateHealthLevel()} />
                             </UpdateInput>
                           ) : (
                             <></>
@@ -127,7 +184,7 @@ function AssetPage() {
                         }
                       </UpdateBox>
                       <ProgressBox>
-                        <Progress style={{ paddingLeft: "10px", paddingRight: "10px" }} percent={asset.healthLevel} status="active" />
+                        <Progress style={{ paddingLeft: "10px", paddingRight: "10px" }} percent={value?? undefined} status="active" />
                       </ProgressBox>
                     </DivideStausBox>
                   </StatusBoX>

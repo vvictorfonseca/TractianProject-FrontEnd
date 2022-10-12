@@ -54,7 +54,7 @@ function UnitBox(props: any) {
   }
 
   function deleteUnit() {
-    const URL = `http://localhost:5000/delete/${props.id}`
+    const URL = `http://localhost:5000/delete/unit/${props.id}`
 
     const promise = axios.delete(URL, config)
     promise.then(response => {
