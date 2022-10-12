@@ -71,12 +71,12 @@ function UserPage() {
                     {
                       companyCounts.unitCount === 0 ? (
                         <Tooltip title="Create Unit">
-                        <ArrowBox>
-                          <PlusCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} onClick={() => {
-                            setOpenNewUnitForm(true)
-                            setPageControl("units")
-                          }} />
-                        </ArrowBox>
+                          <ArrowBox>
+                            <PlusCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} onClick={() => {
+                              setOpenNewUnitForm(true)
+                              setPageControl("units")
+                            }} />
+                          </ArrowBox>
                         </Tooltip>
                       ) : (
                         <ArrowBox>
@@ -87,10 +87,12 @@ function UserPage() {
                   </CountBox>
 
                   <CountBox style={{ background: "rgba(172, 172, 165, 0.3)" }}>
-                    <IconBox>
-                      <SettingOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
-                      {companyCounts.assetsCount}
-                    </IconBox>
+                    <Tooltip title="Total assets">
+                      <IconBox>
+                        <SettingOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
+                        {companyCounts.assetsCount}
+                      </IconBox>
+                    </Tooltip>
                     <NameBox>Assets</NameBox>
                     <ArrowBox>
                       {/* <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} /> */}
@@ -98,10 +100,12 @@ function UserPage() {
                   </CountBox>
 
                   <CountBox style={{ background: "rgba(172, 172, 165, 0.3)" }}>
-                    <IconBox>
-                      <UsergroupAddOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
-                      {companyCounts.usersCount}
-                    </IconBox>
+                    <Tooltip title="Company Users">
+                      <IconBox>
+                        <UsergroupAddOutlined style={{ fontSize: "20px", marginRight: "7px" }} />
+                        {companyCounts.usersCount}
+                      </IconBox>
+                    </Tooltip>
                     <NameBox>Users</NameBox>
                     <ArrowBox>
                       {/* <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} /> */}

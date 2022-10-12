@@ -69,7 +69,10 @@ function CreateUnit() {
           </Form.Item>
 
           <Form.Item>
-            <Button style={{ marginRight: "50px" }} type="primary" htmlType="submit" className="login-form-button" onClick={() => setOpenNewUnitForm(false)}>
+            <Button style={{ marginRight: "50px" }} type="primary" htmlType="submit" className="login-form-button" onClick={() => {
+              setPageControl("")
+              setOpenNewUnitForm(false)
+            }}>
               Back
             </Button>
             <Button style={{ marginLeft: "28px" }} type="primary" htmlType="submit" className="login-form-button" onClick={() => createUnit()} >
