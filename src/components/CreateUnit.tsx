@@ -3,7 +3,7 @@ import axios from "axios";
 import styled from "styled-components"
 
 import { ShopOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 
 import UserContext from "../contexts/userContext";
 import CompanyContext from "../contexts/CompanyContext";
@@ -34,7 +34,7 @@ function CreateUnit() {
 
     const promise = axios.post(URL, objNewCompany, config)
     promise.then(() => {
-      alert(`New unit created on company ${company.name}`)
+      message.success('Unit Created');
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setOpenNewUnitForm(false)
       setPageControl("")

@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import axios from "axios";
 import styled from "styled-components"
 
-import { Progress, Switch, InputNumber, Tooltip, Button, Modal, Alert  } from 'antd';
+import { Progress, Switch, InputNumber, Tooltip, Button, Modal, Alert, message  } from 'antd';
 import { LeftCircleOutlined, PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, SendOutlined } from '@ant-design/icons';
 
 import UserContext from "../contexts/userContext";
@@ -19,7 +19,7 @@ function AssetPage() {
   const { userToken } = useContext(UserContext)
 
   const [updateOpen, setUpdateOpen] = useState(false)
-  const [value, setValue] = useState<number | null>(asset.healthLevel);
+  const [value, setValue] = useState<number | null>(asset.healthLevel?? 0);
   const [status, setStatus] = useState<string | null>(null)
 
   const onChange = (checked: boolean) => {
@@ -56,6 +56,7 @@ function AssetPage() {
 
     const promise = axios.put(URL, objUpdateHealthLevel, config)
     promise.then(() => {
+      message.success('updated');
       
       let newStatus: string | null
       
@@ -92,7 +93,7 @@ function AssetPage() {
 
     const promise = axios.put(URL, objUpdate, config)
     promise.then(() => {
-      
+
     }).catch(err => {
       console.log(err)
     })
@@ -103,7 +104,7 @@ function AssetPage() {
 
     const promise = axios.delete(URL, config)
     promise.then(() => {
-      <Alert message="Successfully Deleted" type="success" showIcon />
+      message.success('Asset Deleted');
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setPageControl("")
     })

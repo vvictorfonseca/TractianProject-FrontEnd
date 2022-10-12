@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import axios from "axios";
 import styled from "styled-components"
 
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons';
 
 import UserContext from "../contexts/userContext"
@@ -43,6 +43,7 @@ function CreatUser() {
 
     const promise = axios.post(URL, objCreateNewUser, config)
     promise.then(response => {
+      message.success('User Created');
       alert(`New user Created on company ${companyInfo.name}`)
       setNewCompany("")
       setCompanyInfo(null)

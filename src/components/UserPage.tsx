@@ -7,6 +7,7 @@ import CompanyContext from "../contexts/CompanyContext";
 
 import UnitsPage from "./UnitsPage";
 import AssetPage from "./AssetPage";
+import CreateAssetByUnitPage from "./CreateAssetByUnitpage";
 
 import { UsergroupAddOutlined, ShopOutlined, RightCircleOutlined, SettingOutlined } from '@ant-design/icons';
 
@@ -101,6 +102,8 @@ function UserPage() {
           <UnitsPage />
         ) : pageControl === "assetPage" ? (
           <AssetPage />
+        ) : pageControl === "newAsset" ? (
+          <CreateAssetByUnitPage />
         ) : (
           <></>
         )

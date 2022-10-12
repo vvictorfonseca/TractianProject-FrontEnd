@@ -5,7 +5,7 @@ import styled from "styled-components"
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import { Tooltip, Modal } from 'antd';
+import { Tooltip, Modal, message } from 'antd';
 import { LeftCircleOutlined, PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import UserContext from "../contexts/userContext";
@@ -22,11 +22,12 @@ interface Props {
 const { confirm } = Modal;
 
 function UnitBox(props: any) {
+  console.log("unitBox", props)
   const [status, setStatus] = useState("")
   const [open, setOpen] = useState(false)
 
   const { userToken } = useContext(UserContext)
-  const { backgroundColor, setBackgroundColor, setPageControl, refreshCompanyData, setRefreshCompanyData, openNewUnitForm, setOpenNewUnitForm } = useContext(CompanyContext)
+  const { backgroundColor, setBackgroundColor, setPageControl, refreshCompanyData, setRefreshCompanyData, openNewUnitForm, setOpenNewUnitForm, setUnitId, setCreateForm } = useContext(CompanyContext)
 
   const unitNameStringfy: string = JSON.stringify(props.name)
   localStorage.setItem('unitName', unitNameStringfy)
@@ -56,7 +57,7 @@ function UnitBox(props: any) {
 
     const promise = axios.delete(URL, config)
     promise.then(response => {
-      alert("aloooou")
+      message.success('Unit Deleted');
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setPageControl("")
     })
@@ -102,6 +103,7 @@ function UnitBox(props: any) {
             setStatus("runningAssets")
             open ? setOpen(false) : setOpen(true)
             setBackgroundColor("rgba(59, 158, 44, 0.5)")
+            setUnitId(props.id)
           })
         }
       }, {
@@ -114,6 +116,7 @@ function UnitBox(props: any) {
             setStatus("alertingAssets")
             open ? setOpen(false) : setOpen(true)
             setBackgroundColor("rgba(180, 190, 40, 0.5)")
+            setUnitId(props.id)
           }),
         }
 
@@ -127,6 +130,7 @@ function UnitBox(props: any) {
             setStatus("stoppedAssets")
             open ? setOpen(false) : setOpen(true)
             setBackgroundColor("rgba(158, 45, 45, 0.5)")
+            setUnitId(props.id)
           })
         }
       }],
@@ -139,11 +143,26 @@ function UnitBox(props: any) {
         <H2>{props.name}</H2>
       </BoxHeader>
       <BoxAssets>
-        <HighchartsReact
-          containerProps={{ style: { height: "170px", width: "260px" } }}
-          highcharts={Highcharts}
-          options={options}
-        />
+        {
+          props.assets.length > 0 ? (
+            <HighchartsReact
+              containerProps={{ style: { height: "170px", width: "260px" } }}
+              highcharts={Highcharts}
+              options={options}
+            />
+          ) : (
+            <Tooltip title="Create Asset">
+              <NoAssetBox onClick={() => {
+                setUnitId(props.id)
+                setPageControl("newAsset")
+              }} >
+
+                <h1>No assets in this unit</h1>
+                <PlusCircleOutlined style={{ fontSize: "30px", marginTop: "15px" }} />
+              </NoAssetBox>
+            </Tooltip>
+          )
+        }
       </BoxAssets>
       <InfoBox open={open} height={assets[status]} backgroundColor={backgroundColor} >
         {
@@ -244,8 +263,6 @@ const Footer = styled.div`
   height: 40px;
   border-radius: 8px;
   border: solid 1px #dadada;
-  //background-color: gray;
-  //margin-bottom: 15px;
 `
 const ButtonBox = styled.div`
   display: flex;
@@ -254,6 +271,20 @@ const ButtonBox = styled.div`
   border-radius: 100px;
   width: 40px;
   height: 40px;
+`
+const NoAssetBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 140px;
+  height: 70px;
+  cursor: pointer;
+  //background-color: red;
+
+  h1{
+    font-size: 14px;
+  }
 `
 
 export default UnitBox

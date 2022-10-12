@@ -6,7 +6,7 @@ import {
   Form,
   Input,
   Button,
-  DatePicker,
+  message,
   InputNumber,
 } from 'antd';
 
@@ -17,7 +17,7 @@ import UserContext from "../contexts/userContext"
 
 const { TextArea } = Input;
 
-function CreateAsset() {
+function CreateAssetByUnitPage() {
   const { userToken } = useContext(UserContext)
   const { assetInfo, company, setCreateForm, refreshCompanyData, setRefreshCompanyData, setPageControl, unitId } = useContext(CompanyContext)
   const asset: AssetInfo = assetInfo
@@ -43,7 +43,7 @@ function CreateAsset() {
     owner: company.name,
     healthLevel: "",
     status: "",
-    unitId: assetInfo.unitId
+    unitId: unitId
   })
 
   const config = {
@@ -76,7 +76,7 @@ function CreateAsset() {
 
     const promise = axios.post(URL, objCreateAsset, config)
     promise.then(() => {
-      alert("Asset Created")
+      message.success('Created');
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setPageControl("")
       setCreateForm(false)
@@ -89,7 +89,7 @@ function CreateAsset() {
   return (
     <Body>
       <H1Box>
-        <H1>Create new asset to {assetInfo.unit.name}</H1>
+        <H1>Create new asset</H1>
       </H1Box>
 
       <CompaniesBoxes>
@@ -137,7 +137,7 @@ function CreateAsset() {
           </Form.Item>
           <Div>
             <Form.Item >
-              <Button onClick={() => setCreateForm(false)}>Return</Button>
+              <Button onClick={() => setPageControl("units")}>Return</Button>
             </Form.Item>
             <Form.Item >
               <Button onClick={() => createNewAsset()}>Register</Button>
@@ -183,4 +183,4 @@ const Div = styled.div`
   display: flex;
   justify-content: space-evenly;
 `
-export default CreateAsset
+export default CreateAssetByUnitPage

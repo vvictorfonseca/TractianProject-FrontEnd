@@ -12,7 +12,6 @@ interface Props {
 }
 
 function CompanyBox( props: Props ) {
-  console.log(props)
   const { setLogAdmin } = useContext(UserContext)
   const { setCompany } = useContext(CompanyContext)
   
