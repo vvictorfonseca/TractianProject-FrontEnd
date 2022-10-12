@@ -9,12 +9,13 @@ import UnitsPage from "./UnitsPage";
 import AssetPage from "./AssetPage";
 import CreateAssetByUnitPage from "./CreateAssetByUnitpage";
 
-import { UsergroupAddOutlined, ShopOutlined, RightCircleOutlined, SettingOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined, ShopOutlined, RightCircleOutlined, SettingOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 
 function UserPage() {
   const { userToken, userName } = useContext(UserContext)
-  const { companyCounts, setCompanyCounts, pageControl, setPageControl, company, refreshCompanyData } = useContext(CompanyContext)
-  
+  const { companyCounts, setCompanyCounts, pageControl, setPageControl, company, refreshCompanyData, setOpenNewUnitForm } = useContext(CompanyContext)
+
   useEffect(() => {
     getCompanyCounts()
   }, [refreshCompanyData])
@@ -67,9 +68,22 @@ function UserPage() {
                       {companyCounts.unitCount}
                     </IconBox>
                     <NameBox>Units</NameBox>
-                    <ArrowBox>
-                      <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} onClick={() => setPageControl("units")} />
-                    </ArrowBox>
+                    {
+                      companyCounts.unitCount === 0 ? (
+                        <Tooltip title="Create Unit">
+                        <ArrowBox>
+                          <PlusCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} onClick={() => {
+                            setOpenNewUnitForm(true)
+                            setPageControl("units")
+                          }} />
+                        </ArrowBox>
+                        </Tooltip>
+                      ) : (
+                        <ArrowBox>
+                          <RightCircleOutlined style={{ fontSize: "20px", cursor: "pointer" }} onClick={() => setPageControl("units")} />
+                        </ArrowBox>
+                      )
+                    }
                   </CountBox>
 
                   <CountBox style={{ background: "rgba(172, 172, 165, 0.3)" }}>
@@ -108,7 +122,7 @@ function UserPage() {
           <></>
         )
       }
-    </Body>
+    </Body >
   )
 }
 

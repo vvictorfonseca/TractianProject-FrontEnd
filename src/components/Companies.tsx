@@ -3,6 +3,8 @@ import styled from "styled-components";
 import axios from "axios";
 
 import UserContext from "../contexts/userContext";
+import CompanyContext from "../contexts/CompanyContext";
+
 import CompanyBox from "./CompanyBox";
 
 function Companies() {
@@ -13,10 +15,11 @@ function Companies() {
   }
 
   const { companies, setCompanies } = useContext(UserContext)
+  const { refreshCompanyData } = useContext(CompanyContext)
 
   useEffect(() => {
     getCompanies()
-  }, [])
+  }, [refreshCompanyData])
 
   function getCompanies() {
     const URL = "https://tractian-project-vh.herokuapp.com/get/companies"
@@ -48,8 +51,6 @@ function Companies() {
 
 const Body = styled.div`
   width: 50vw;
-  //height: 100vh;
-  //background-color: purple;
 `
 
 const H1Box = styled.div`

@@ -6,7 +6,7 @@ import {
   Form,
   Input,
   Button,
-  DatePicker,
+  message,
   InputNumber,
 } from 'antd';
 
@@ -76,13 +76,14 @@ function CreateAsset() {
 
     const promise = axios.post(URL, objCreateAsset, config)
     promise.then(() => {
-      alert("Asset Created")
+      message.success('Asset Created');
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setPageControl("")
       setCreateForm(false)
     })
     promise.catch(err => {
       console.log(err)
+      message.error(err.response.data)
     })
   }
 

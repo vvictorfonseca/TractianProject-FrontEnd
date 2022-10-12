@@ -62,7 +62,8 @@ function UnitBox(props: any) {
       setPageControl("")
     })
     promise.catch(err => {
-      console.log(err)
+      message.error('Must delete its assets firts');
+      console.log("vish", err.data)
     })
   }
 

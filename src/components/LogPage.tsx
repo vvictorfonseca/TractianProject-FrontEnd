@@ -6,7 +6,7 @@ import UserContext from "../contexts/userContext";
 import CompanyContext from "../contexts/CompanyContext";
 
 import { LockOutlined, UserOutlined, IdcardOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 
 function LogPage() {
 
@@ -62,7 +62,8 @@ function LogPage() {
       }
     })
     promise.catch(err => {
-      console.log(err)
+      console.log("aquiiii", err.response.data)
+      message.error(err.response.data)
     })
   }
 

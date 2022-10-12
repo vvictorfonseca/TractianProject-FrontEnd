@@ -1,11 +1,12 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components"
 
 import UserContext from "../contexts/userContext";
+import CompanyContext from "../contexts/CompanyContext";
 
 import { UserAddOutlined, ShopOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 
 import CompaniesToCreateUser from "./CompaniesToCreateUser";
 import CreatUser from "./CreateUser";
@@ -13,7 +14,13 @@ import CreatUser from "./CreateUser";
 function AdmPage() {
   const [companyName, setCompanyName] = useState("")
 
-  const { userToken, companyInfo, newCompany, setNewCompany } = useContext(UserContext)
+  const { userToken, companyInfo, newCompany, setNewCompany, setLogAdmin, setIsAdm, setCompanies } = useContext(UserContext)
+  const { refreshCompanyData, setRefreshCompanyData } = useContext(CompanyContext)
+
+  useEffect(() => {
+    setCompanies(null)
+    getCompanies()
+  }, [refreshCompanyData])
 
   const config = {
     headers: {
@@ -29,15 +36,30 @@ function AdmPage() {
     name: companyName
   }
 
+  function getCompanies() {
+    const URL = "https://tractian-project-vh.herokuapp.com/get/companies"
+
+    const promise = axios.get(URL)
+    promise.then(response => {
+      const { data } = response
+      setCompanies(data)
+    })
+    promise.catch(err => {
+      console.log(err)
+    })
+  }
+
   function createNewCompany()  {
     const URL = "https://tractian-project-vh.herokuapp.com/create/company"
 
     const promise = axios.post(URL, objNewCompany, config)
     promise.then(response => {
-      alert("Company Created")
+      message.success('Company Created');
+      refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setNewCompany("")
     })
     promise.catch(err => {
+      message.error('must have at least 5 characters');
       console.log(err)
     })
   }

@@ -76,7 +76,7 @@ function CreateAssetByUnitPage() {
 
     const promise = axios.post(URL, objCreateAsset, config)
     promise.then(() => {
-      message.success('Created');
+      message.success('Asset Created');
       refreshCompanyData ? setRefreshCompanyData(false) : setRefreshCompanyData(true)
       setPageControl("")
       setCreateForm(false)

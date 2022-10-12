@@ -22,6 +22,7 @@ interface userObj {
 
 function CreatUser() {
   const { companyInfo, setCompanyInfo, setNewCompany, userToken } = useContext(UserContext)
+  console.log("companyInfo", companyInfo.id)
 
   const [userInfo, setUserInfo] = useState({ email: "", password: "", fullName: "", companyId: companyInfo.id })
 
@@ -43,8 +44,7 @@ function CreatUser() {
 
     const promise = axios.post(URL, objCreateNewUser, config)
     promise.then(response => {
-      message.success('User Created');
-      alert(`New user Created on company ${companyInfo.name}`)
+      message.success(`user Created on company ${companyInfo.name}`)
       setNewCompany("")
       setCompanyInfo(null)
     })
