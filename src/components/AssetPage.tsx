@@ -169,7 +169,9 @@ function AssetPage() {
                           updateOpen ? (
                             <UpdateInput>
                               <InputNumber size={'small'} min={1} max={100} value={value} onChange={setValue} />
-                              <Button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: "5px" }} type="primary" shape="circle" icon={<SendOutlined style={{ marginLeft: "3px", fontSize: "12px" }} />} size='small' onClick={() => updateHealthLevel()} />
+                              <Tooltip title="Click to confirm">
+                                <Button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: "5px" }} type="primary" shape="circle" icon={<SendOutlined style={{ marginLeft: "3px", fontSize: "12px" }} />} size='small' onClick={() => updateHealthLevel()} />
+                              </Tooltip>
                             </UpdateInput>
                           ) : (
                             <></>
@@ -227,6 +229,7 @@ const H1Box = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 `
 const H1 = styled.div`
+  text-align: center;
   font-size: 25px;
   color: white;
 `

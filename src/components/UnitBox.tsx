@@ -22,7 +22,6 @@ interface Props {
 const { confirm } = Modal;
 
 function UnitBox(props: any) {
-  console.log("unitBox", props)
   const [status, setStatus] = useState("")
   const [open, setOpen] = useState(false)
 

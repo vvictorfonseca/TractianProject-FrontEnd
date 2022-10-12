@@ -104,6 +104,7 @@ const H1Box = styled.div`
 const H1 = styled.div`
   font-size: 25px;
   color: white;
+  text-align: center;
 `
 const CompaniesBoxes = styled.div`
   display: flex;

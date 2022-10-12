@@ -10,6 +10,7 @@ import Companies from "./Companies";
 import LogPage from "./LogPage";
 import AdmPage from "./AdmPage";
 import UserPage from "./UserPage";
+import Footer from "./Footer";
 
 function HomePage() {
   const { logAdmin, setLogAdmin, isAdm, setIsAdm, userName } = useContext(UserContext)
@@ -53,7 +54,7 @@ function HomePage() {
             <UserPage />
           )
         }
-
+        <Footer />
       </Container>
     </>
   )
