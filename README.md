@@ -6,9 +6,7 @@
 
 - Logar como usuário na empresa Freios Supremos: email: emerson@gmail.com, password: 123456
 
-## Link da aplicação deployada
-
-- tractian-ten.vercel.app
+***
 
 ##  🧑‍💻: Usabilidade
 
@@ -17,6 +15,8 @@ Existem duas formas de logar, usando a conta de administrador e a conta de usuá
 - Logando como admin você tem a disponibilidade de criar novas empresas e criar usuários para determinada empresa.
 
 - Para um usuáio de empresa, basta clicar na empresa que trabalha e efetuar o login passado pelo admin. Você só conseguirá logar na empresa que o admin te cadastrou.
+
+***
 
 ##  :clipboard: Descrição
 
@@ -45,6 +45,13 @@ Empresas que contraram o serviço desta aplicação são capazes de gerenciar os
 - JWTs & refresh tokens
 
 ***
+
+## Link da aplicação deployada
+
+- tractian-ten.vercel.app
+
+***
+
 ## 🏁 Rodando a aplicação
 
 Certifique-se que voce tem a ultima versão estável do Node.js e npm rodando localmente.
