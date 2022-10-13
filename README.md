@@ -1,12 +1,16 @@
 # <p align = "center"> TRACTIAN - Project </p>
 
-##  :user: Credencias de acesso
+## :bust_in_silhouette: Credencias de acesso
 
 - Logar como admin: email: adm@tractian.com, password: 123456
 
 - Logar como usuário na empresa Freios Supremos: email: emerson@gmail.com, password: 123456
 
-##  :clipboard: Usabilidade
+## Link da aplicação deployada
+
+
+
+##  🧑‍💻: Usabilidade
 
 Existem duas formas de logar, usando a conta de administrador e a conta de usuário de empresa.
 
@@ -16,18 +20,15 @@ Existem duas formas de logar, usando a conta de administrador e a conta de usuá
 
 ##  :clipboard: Descrição
 
-HomeCare é uma aplicação de prestação de serviços domésticos. Profissionais podem se cadastrar e escolhero tipo de serviço que irá prestar, FAXINA, JARDINAGEM ou SERVIÇOS ELÉTRICOS. Por outro lado, qualquer pessoa que necessita de algum serviço desse tipo, pode se cadastrar como cliente e contratar o serviço desses profissionais.
+Empresas que contraram o serviço desta aplicação são capazes de gerenciar os ativos (máquinas) de suas fábricas. Seus usuários são capazes de criar unidades, novas máquinas e obter informação destas em tempo real, podendo fazer atualizações a qualquer momento.  
 
 ***
 ##  :hammer: Principais Funcionalidades
 
-- Profissionais podem criar uma descrição e atualizá-la quando quiser.
-- Profissionais recebem a notificação de alguma reserva de serviço feito por algum cliente e possuem a opção de aceitar ou não o trabalho. Caso rejeite, a solicitação é apagada imediatamente.
-- Na página dos clientes, os profissionais são filtrados a partir de sua localização.
-- Clientes podem atualizar sua localização a qualquer momento.
-- Clientes podem escolher a categoria de serviço que querem contratar.
-- Clientes podem solicitar um trabalho escolhendo a data para que o serviço seja prestado.
-- Clientes possuem uma aba "requests" contendo todas suas solicitações de serviços e seus status, aceito ou pendente.
+- Pessoa logado como admin pode criar novas empresas e usuários pra essas empresas.
+- Pessoa logada como usuária de empresa possui um overview da empresa em seu homePage, contendo o número de unidades, máquinas e usuários da empresa.
+- Pessoa logada como usuária de empresa pode criar novas unidades e novas máquinas para alguma unidade específica. Possui também a opção de atualizar o healthLevel da máquina e, consequentemente seu status. Por último também é possível deletar unidade e máquinas (Para deletar uma unidade é necessário deletar suas máquinas antes).
+- Pessoa logada como usuária de empresa clicando na opção "unit", é possível observar cada unidade da empresa separadamente com um gráfico mostrando quantas máquinas estão em um certo status, e clicando nesse status é exibido os nomes das máquinas dessa unidade que estão atualmente com esse status. Clicando no nome da máquina é exibido sua página de gerenciamento, possuindo informações da máquina e a disponibilidade de atualizar seu healthLevel. Podendo também criar uma nova máquina pra essa unidade ou deletar a máquina.
 
 ***
 
@@ -35,9 +36,12 @@ HomeCare é uma aplicação de prestação de serviços domésticos. Profissiona
 
 - React.js
 - Node.js
+- Typescript
 - Express.js
-- PostgresSQL
+- MongoDB
 - Prisma
+- Highcharts
+- AntDesign
 - JWTs & refresh tokens
 
 ***
