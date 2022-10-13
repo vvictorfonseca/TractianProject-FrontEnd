@@ -8,7 +8,7 @@
 
 ## Link da aplicação deployada
 
-
+- tractian-ten.vercel.app
 
 ##  🧑‍💻: Usabilidade
 
